@@ -37,9 +37,10 @@ function countTransactions(transactionReport = []) {
 
         ret.reps.push({
             name: repTransactions.name,
+            district: repTransactions.district,
             transactionCount: children.transactionCount,
             purchase: children.purchase,
-            sales: children.sales
+            sales: children.sale
         });
 
         ret.repsReporting++;

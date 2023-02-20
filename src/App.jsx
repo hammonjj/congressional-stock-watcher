@@ -1,10 +1,9 @@
-import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-import AdoptedPetContext from "./AdoptedPetContext";
-import Details from "./Details";
-import SearchParams from "./SearchParams";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SearchParams from "./Components/SearchParams";
+import ReportContext from "./ReportContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,21 +15,17 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  const adoptedPet = useState(null);
+  const currentReport = useState(null);
   return (
     <div>
       <BrowserRouter>
-        <AdoptedPetContext.Provider value={adoptedPet}>
+        <ReportContext.Provider value={currentReport}>
           <QueryClientProvider client={queryClient}>
-            <header>
-              <Link to="/">Congressional Stock Watch</Link>
-            </header>
             <Routes>
-              <Route path="/details/:id" element={<Details />} />
               <Route path="/" element={<SearchParams />} />
             </Routes>
           </QueryClientProvider>
-        </AdoptedPetContext.Provider>
+        </ReportContext.Provider>
       </BrowserRouter>
     </div>
   );
