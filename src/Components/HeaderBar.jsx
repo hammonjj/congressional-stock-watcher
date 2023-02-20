@@ -10,6 +10,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useState, useEffect, useContext } from "react";
 import ReportContext from '../ReportContext';
 import Paper from '@mui/material/Paper';
+import LogoImg from "../logo.png";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -83,7 +84,7 @@ export default function HeaderBar() {
                     component="div"
                     sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                 >
-                    <img src="../logo.png" alt="Logo" style={{ verticalAlign:"middle"}}/>
+                    <img src={LogoImg} alt="Logo" style={{ verticalAlign:"middle"}}/>
                 </Typography>
                 <Search>
                     <SearchIconWrapper>
