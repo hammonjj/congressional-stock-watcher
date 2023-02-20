@@ -9,6 +9,7 @@ import Select from "@mui/material/Select";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useState, useEffect, useContext } from "react";
 import ReportContext from '../ReportContext';
+import Paper from '@mui/material/Paper';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -56,56 +57,57 @@ export default function HeaderBar() {
 
     useEffect(() => {
         getTransactionReports();
+
+        async function getTransactionReports() {
+            fetch("https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/filemap.xml")
+                .then((response) => response.text())
+                .then((response) => {
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(response, "text/xml");
+                const results = [].slice
+                    .call(xml.getElementsByTagName("Key"))
+                    .filter((key) => key.textContent.includes(".json"));
+                setTransactionReports(results.map((file) => file.textContent));
+            });
+        }
     }, []);
 
-    async function getTransactionReports() {
-    fetch("https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/filemap.xml")
-        .then((response) => response.text())
-        .then((response) => {
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(response, "text/xml");
-        const results = [].slice
-            .call(xml.getElementsByTagName("Key"))
-            .filter((key) => key.textContent.includes(".json"));
-        setTransactionReports(results.map((file) => file.textContent));
-        });
-    }
-
   return (
-    <Box sx={{ flexGrow: 1 }} >
-      <AppBar position="static">
-        <Toolbar>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            Congressional Stock Watcher
-          </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <CalendarMonthIcon />
-            </SearchIconWrapper>
-            <StyledSelect 
-                inputProps={{ 'aria-label': 'search' }}
-                onChange={(event) => {
-                    setCurrentReport(event.target.value);
-                }}
+    <Paper elevation={5}>
+        <Box sx={{ flexGrow: 1 }} >
+            <AppBar position="static">
+                <Toolbar>
+                <Typography
+                    variant="h6"
+                    noWrap
+                    component="div"
+                    sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                 >
-                <MenuItem key="first" value=""></MenuItem>
-                {transactionReports.map((file) => (
-                    <MenuItem
-                        key={file}
-                        value={file}
-                    >
-                        {file.replace("data/transaction_report_for_", "").replace(".json", "").replace(/_/g, "-")}
-                    </MenuItem>
-                ))}
-            </StyledSelect>
-          </Search>
-        </Toolbar>
-      </AppBar>
-    </Box>
+                    <img src="../logo.png" alt="Logo" style={{ verticalAlign:"middle"}}/>
+                </Typography>
+                <Search>
+                    <SearchIconWrapper>
+                    <CalendarMonthIcon />
+                    </SearchIconWrapper>
+                    <StyledSelect 
+                        inputProps={{ 'aria-label': 'search' }}
+                        onChange={(event) => {
+                            setCurrentReport(event.target.value);
+                        }}
+                        >
+                        {transactionReports.map((file) => (
+                            <MenuItem
+                                key={file}
+                                value={file}
+                            >
+                                {file.replace("data/transaction_report_for_", "").replace(".json", "").replace(/_/g, "-")}
+                            </MenuItem>
+                        ))}
+                    </StyledSelect>
+                </Search>
+                </Toolbar>
+            </AppBar>
+        </Box>
+    </Paper>
   );
 }

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import { TRADE_BREAKDOWN_PIE_CHAR_LABELS } from "../Utilities/Constants"
@@ -25,18 +25,14 @@ const TradeBreakdownCard = (props) => {
         ]
     }
 
-    let cardStyle = {
+    const cardStyle = {
         display: 'block',
         transitionDuration: '0.3s',
-        height: '45vw'
+        height: '37.5vw'
     }
 
     return (
         <Card style={cardStyle}>
-            <CardHeader 
-                title="Buy/Sell Breakdown" 
-                subtitle="Subtitle"
-                />
             <CardContent>
                 <Typography sx={{ fontSize: 14}} gutterBottom>
                     Buy/Sell Breakdown
@@ -47,7 +43,6 @@ const TradeBreakdownCard = (props) => {
                 <Pie data={data} />
             </CardContent>
         </Card>
-        
     );
 }
 

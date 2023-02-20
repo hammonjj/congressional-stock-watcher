@@ -16,6 +16,7 @@ const queryClient = new QueryClient({
 
 const App = () => {
   const currentReport = useState(null);
+  
   return (
     <div>
       <BrowserRouter>

@@ -3,14 +3,15 @@ import Grid from '@mui/material/Grid';
 import NumberOfTradesCard from "./NumberOfTradesCard";
 import RepsReportingCard from "./RepsReportingCard";
 import TradeRatioCard from "./TradeRatioCard";
-import TradeVolumeCard from "./TradeVolumeCard";
+import DataSourceCard from "./DataSourceCard";
 import TradeBreakdownCard from "./TradeBreakdownCard"
 import { parseTransactionReport } from "../Utilities/TransactionReportUtilities";
 
 const TransactionReport = (props) => {
     const [transactionReport, setTransactionReport] = useState([]);
     const parsedReport = parseTransactionReport(transactionReport);
-
+    const dataSourceUrl = `https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/${props.transactionReport}`;
+    console.log(`${props.transactionReport}`);
     useEffect(() => {
         getTransactionReportForDay();
 
@@ -20,7 +21,7 @@ const TransactionReport = (props) => {
                 return;
             }
 
-            fetch(`https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/${props.transactionReport}`)
+            fetch(dataSourceUrl)
                 .then((response) => response.json())
                 .then((response) => {
                     setTransactionReport(response);
@@ -40,7 +41,7 @@ const TransactionReport = (props) => {
                 <RepsReportingCard numberOfReps={parsedReport.repsReporting} />
             </Grid>
             <Grid item xs={6}>
-                <TradeVolumeCard />
+                <DataSourceCard dataSourceUrl={dataSourceUrl} />
             </Grid>
             {
                 parsedReport.reps.map(rep => (

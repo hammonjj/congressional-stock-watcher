@@ -5,13 +5,17 @@ import HeaderBar from "./HeaderBar";
 import ReportContext from '../ReportContext';
 
 const SearchParams = () => {
-  const [currentReport] = useContext(ReportContext);
+  let [currentReport] = useContext(ReportContext);
+
+  if(!currentReport) {
+    currentReport = "data/transaction_report_for_02_15_2023.json";
+  }
 
   return (
     <div>
       <HeaderBar />
       <br />
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent="center">
         <Grid item xs={8}>
           {currentReport ? (<TransactionReport transactionReport={currentReport}></TransactionReport>) : null}
         </Grid>
